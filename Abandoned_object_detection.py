@@ -7,7 +7,7 @@ tracker = ObjectTracker()
 
 
 # location of first frame
-firstframe_path =r'FrameNo0.png'
+firstframe_path =r'Frame.png'
 
 firstframe = cv2.imread(firstframe_path)
 firstframe_gray = cv2.cvtColor(firstframe, cv2.COLOR_BGR2GRAY)
