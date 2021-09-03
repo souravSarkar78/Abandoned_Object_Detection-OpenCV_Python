@@ -3,7 +3,7 @@ import cv2
 from tracker import *
 
 # Initialize Tracker
-tracker = EuclideandistanceTracker()
+tracker = ObjectTracker()
 
 
 # location of first frame

@@ -1,7 +1,7 @@
 import math
 
 
-class EuclideandistanceTracker:
+class ObjectTracker:
     def __init__(self):
         # Store the center positions of the objects
         self.center_points = {}
