@@ -2,7 +2,7 @@
 
 Run Abandoned_object_detection.py to detect abandoned objects in real time.
 
-To detect in your own video file, first take an initial frame that does'nt contain any moving objects.
+To detect from your own video file, first take an initial frame that does'nt contain any moving objects.
 
 Rename the frame as "Frame.png"
 

@@ -1,6 +1,5 @@
 import math
 
-
 class ObjectTracker:
     def __init__(self):
         # Store the center positions of the objects
@@ -37,8 +36,8 @@ class ObjectTracker:
                     #   still in the temp dictionary for certain threshold count then
                     #   the object will be considered as abandoned object 
                     if id in self.abandoned_temp:
-                        if distance<0.5:
-                            if self.abandoned_temp[id] >80:
+                        if distance<1:
+                            if self.abandoned_temp[id] >100:
                                 abandoned_object.append([id, x, y, w, h, distance])
                             else:
                                 self.abandoned_temp[id] += 1  # Increase count for the object
