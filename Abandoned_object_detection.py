@@ -25,7 +25,7 @@ kernel = np.ones((10,10),np.uint8) #higher the kernel, eg (20,20), more will be 
 while (cap.isOpened()):
     ret, frame = cap.read()
     
-    
+    frame_height, frame_width, _ = frame.shape
     if ret==0:
         break
     
@@ -62,7 +62,8 @@ while (cap.isOpened()):
             detections.append([x, y, w, h])
 
     box_ids, abandoned_objects = tracker.update(detections)
-    # print(abandoned)
+    
+    # print(abandoned_objects)
     # box_ids = tracker.update(detections)
     
     # Draw rectangle and id over all tracked objects
@@ -75,7 +76,16 @@ while (cap.isOpened()):
     # Draw rectangle and id over all abandoned objects
     for objects in abandoned_objects:
         _, x2, y2, w2, h2, _ = objects
-        cv2.putText(frame, "Abandoned object detected", (x2, y2 - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 2)
+
+        # Calculate the text's X axis coordinate to prevent overflow from the frame
+        text_x = x2
+        labelSize=cv2.getTextSize("Suspicious object detected",cv2.FONT_HERSHEY_PLAIN,1.2,2)
+        labelWidth = labelSize[0][0]
+        if (frame_width-text_x) < labelWidth:
+            text_x = frame_width - labelWidth
+        
+        
+        cv2.putText(frame, "Suspicious object detected", (text_x, y2 - 10), cv2.FONT_HERSHEY_PLAIN, 1.2, (0, 0, 255), 2)
         cv2.rectangle(frame, (x2, y2), (x2 + w2, y2 + h2), (0, 0, 255), 2)
 
     cv2.imshow('main',frame)
