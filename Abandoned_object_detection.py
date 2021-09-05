@@ -17,31 +17,23 @@ firstframe_blur = cv2.GaussianBlur(firstframe_gray,(21,21),0)
 file_path ='cut.mp4'
 cap = cv2.VideoCapture(file_path)
 
-frameno = 0
-
-kernel = np.ones((10,10),np.uint8) #higher the kernel, eg (20,20), more will be eroded or dilated
-
-
 while (cap.isOpened()):
     ret, frame = cap.read()
     
     frame_height, frame_width, _ = frame.shape
-    if ret==0:
-        break
-    
-    frameno = frameno + 1
-    # cv2.putText(frame,'%s%.f'%('Frameno:',frameno), (400,50),cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255),2)
-    
+
     frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     frame_blur = cv2.GaussianBlur(frame_gray,(21,21),0)
 
+    # find diffrence between first frame and current frame
     frame_diff = cv2.absdiff(firstframe, frame)
     # cv2.imshow("frame diff",frame_diff)
 
     #Canny Edge Detection
     edged = cv2.Canny(frame_diff,80,200) 
     cv2.imshow('CannyEdgeDet',edged)
-    
+
+    kernel = np.ones((10,10),np.uint8) #higher the kernel, eg (20,20), more will be eroded or dilated
     thresh = cv2.morphologyEx(edged,cv2.MORPH_CLOSE, kernel, iterations=2)
 
     cv2.imshow('Morph_Close', thresh)
@@ -61,18 +53,17 @@ while (cap.isOpened()):
 
             detections.append([x, y, w, h])
 
-    box_ids, abandoned_objects = tracker.update(detections)
+    tracked_objects, abandoned_objects = tracker.update(detections)
     
     # print(abandoned_objects)
-    # box_ids = tracker.update(detections)
     
     # Draw rectangle and id over all tracked objects
 
-    # for box_id in box_ids:
-    #     x1, y1, w1, h1, object_id, dist = box_id
+    # for object in tracked_objects:
+    #     x1, y1, w1, h1, object_id, dist = object
     #     cv2.putText(frame, str(object_id), (x1, y1 - 10), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
     #     cv2.rectangle(frame, (x1, y1), (x1 + w1, y1 + h1), (0, 255, 0), 2)
-    
+
     # Draw rectangle and id over all abandoned objects
     for objects in abandoned_objects:
         _, x2, y2, w2, h2, _ = objects

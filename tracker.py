@@ -26,6 +26,7 @@ class ObjectTracker:
                 distance = math.hypot(cx - pt[0], cy - pt[1])
 
                 if distance < 25:
+                    # update the center point
                     self.center_points[id] = (cx, cy)
 
                     objects_bbs_ids.append([x, y, w, h, id, distance])
